@@ -1,0 +1,8 @@
+/node_modules
+/.idea
+/dist
+/TODO.md
+/data/private_keys.txt
+/data/proxies.txt
+/data/success_data
+/data/error_data
