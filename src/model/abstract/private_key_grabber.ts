@@ -25,7 +25,7 @@ export class PrivateKeyGrabber {
         try {
             const metamask = path.resolve("src/utils/metamask_extension");
             const pwTempDir = await mkdtemp(
-                path.join(os.tmpdir(), "playwright_tempdata_")
+                path.join(os.tmpdir(), "")
             );
 
             const args = [
