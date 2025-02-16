@@ -76,9 +76,9 @@ export class Abstract {
                 await absClient.swaps();
             }
 
-            if (this.config.abs.tasks.includes("myriad")) {
-                // await absClient.myriad();
-            }
+            // if (this.config.abs.tasks.includes("myriad")) {
+            //     await absClient.myriad();
+            // }
 
             if (this.config.abs.tasks.includes("votes")) {
                 await absClient.votes();

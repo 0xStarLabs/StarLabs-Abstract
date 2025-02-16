@@ -29,7 +29,7 @@ export function showLogo(): void {
 export function showDevInfo(): void {
     const devInfo = [
         "╔════════════════════════════════════════╗",
-        "║         Abstract Software 2.2          ║",
+        "║         Abstract Software 2.3          ║",
         "║----------------------------------------║",
         "║                                        ║",
         "║  GitHub: https://github.com/StarLabs   ║",

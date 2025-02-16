@@ -86,11 +86,38 @@ export class Client {
 
     private async retryRequest<T>(
         requestFn: () => Promise<T>,
-        maxRetries: number = 3
+        maxRetries: number = 10
     ): Promise<T> {
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
-                return await requestFn();
+                const response = await requestFn();
+
+                // Check if it's a Response type and has rate limiting
+                if (response && (response as unknown as Response).text) {
+                    const typedResponse = response as unknown as Response;
+                    const responseText = await typedResponse.text();
+                    if (responseText.includes("Too Many Requests")) {
+                        if (attempt === maxRetries) {
+                            return response;
+                        }
+                        console.log(responseText);
+                        logger.error(
+                            `ABS shitting its pants, attempt ${attempt}/${maxRetries}. Waiting 15 seconds...`
+                        );
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 15000)
+                        );
+                        continue;
+                    }
+                    // Reconstruct the original response
+                    return {
+                        ...typedResponse,
+                        text: async () => responseText,
+                        json: async () => JSON.parse(responseText),
+                    } as T;
+                }
+
+                return response;
             } catch (error: any) {
                 if (attempt === maxRetries) {
                     throw error;
@@ -98,10 +125,7 @@ export class Client {
                 logger.error(
                     `Request failed, attempt ${attempt}/${maxRetries}: ${error.message}`
                 );
-                // Wait before retry (exponential backoff)
-                await new Promise((resolve) =>
-                    setTimeout(resolve, 1000 * attempt)
-                );
+                await new Promise((resolve) => setTimeout(resolve, 5000));
             }
         }
         throw new Error("All retry attempts failed");

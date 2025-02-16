@@ -30,6 +30,7 @@ import { RelayBridge } from "../bridges/relay.js";
 import { savePrivyPrivateKey } from "../../utils/writer.js";
 import { PrivateKeyGrabber } from "./private_key_grabber.js";
 import { ProgressData, saveProgress } from "../../utils/logs.js";
+import Myriad from "../myriad/instance.js";
 
 interface LoginTokens {
     bearer_token: string;
@@ -255,12 +256,20 @@ export class AbstractAccount {
                 mode: "login-or-sign-up",
             };
 
+            // Make the actual authentication request
             const response = await this.httpClient.post(
                 "https://auth.privy.io/api/v1/siwe/authenticate",
                 { headers, json: jsonData }
             );
 
             if (!response.ok) {
+                const text = await response.text();
+                if (text.includes("Too Many Requests")) {
+                    logger.error(
+                        `${this.accountIndex} | ${this.address} | ABS is shitting its pants, trying again...`
+                    );
+                    return false;
+                }
                 throw new Error(`Failed to login: ${await response.text()}`);
             }
 
