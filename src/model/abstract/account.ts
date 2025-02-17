@@ -922,10 +922,14 @@ export class AbstractAccount {
     async badges(): Promise<boolean> {
         return await this.retryOperation(async () => {
             try {
-                logger.info(
-                    `${this.accountIndex} | ${this.address} | Waiting ${this.config.settings.pause_before_claiming_badges} seconds before claiming badges...`
+                const pauseTime = randomInt(
+                    this.config.settings.pause_before_claiming_badges[0],
+                    this.config.settings.pause_before_claiming_badges[1]
                 );
-                await sleep(this.config.settings.pause_before_claiming_badges * 1000);
+                logger.info(
+                    `${this.accountIndex} | ${this.address} | Waiting ${pauseTime} seconds before claiming badges...`
+                );
+                await sleep(pauseTime * 1000);
 
                 const userInfo = await this._getUserInfo();
                 const badges = userInfo.user.badges;

@@ -27,7 +27,7 @@ settings:
   random_pause_between_swaps: [60, 90]
 
   # pause in seconds before claiming badges
-  pause_before_claiming_badges: 30
+  pause_before_claiming_badges: [20, 30]
 
   # pause in seconds between badges mint
   random_pause_between_badges_mint: [20, 30]

@@ -12,7 +12,7 @@ interface Settings {
     random_pause_between_accounts: [number, number];
     random_pause_between_actions: [number, number];
     random_pause_between_swaps: [number, number];
-    pause_before_claiming_badges: number;
+    pause_before_claiming_badges: [number, number];
     random_pause_between_badges_mint: [number, number];
     pause_after_bridge: [number, number];
     pause_after_withdrawal: [number, number];
