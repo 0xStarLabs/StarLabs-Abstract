@@ -922,6 +922,11 @@ export class AbstractAccount {
     async badges(): Promise<boolean> {
         return await this.retryOperation(async () => {
             try {
+                logger.info(
+                    `${this.accountIndex} | ${this.address} | Waiting ${this.config.settings.pause_before_claiming_badges} seconds before claiming badges...`
+                );
+                await sleep(this.config.settings.pause_before_claiming_badges * 1000);
+
                 const userInfo = await this._getUserInfo();
                 const badges = userInfo.user.badges;
                 if (badges.length === 0) {
@@ -989,6 +994,16 @@ export class AbstractAccount {
                             logger.success(
                                 `${this.accountIndex} | ${this.address} | Successfully minted ${badge.badge.name} | https://abscan.org/tx/${txHash}`
                             );
+
+                            const pauseTime = randomInt(
+                                this.config.settings
+                                    .random_pause_between_badges_mint[0],
+                                this.config.settings.random_pause_between_badges_mint[1]
+                            );
+                            logger.info(
+                                `${this.accountIndex} | ${this.address} | Waiting ${pauseTime} seconds before minting next badge...`
+                            );
+                            await sleep(pauseTime * 1000);
                         }
                     }
                 }

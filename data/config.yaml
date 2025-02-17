@@ -26,6 +26,12 @@ settings:
   # pause in seconds between swaps
   random_pause_between_swaps: [60, 90]
 
+  # pause in seconds before claiming badges
+  pause_before_claiming_badges: 30
+
+  # pause in seconds between badges mint
+  random_pause_between_badges_mint: [20, 30]
+
   # pause in seconds after bridge
   pause_after_bridge: [60, 100]
   
@@ -69,7 +75,7 @@ abs:
   # number of votes for one account in one run
   number_of_votes: [1, 3]
 
-  tasks: ["connect_socials", "swaps", "votes", "badges", "logs", "collect_all_to_eth"]
+  tasks: ["logs"]
   # Example: tasks: ["swaps", "votes", "badges"]
   # "connect_socials" - connect socials to account
   # "swaps" - swaps on abs.xyz | using tokens: ETH, PENGU, USDT, USDC
@@ -77,3 +83,4 @@ abs:
   # "badges" - badges on abs.xyz | get all available badges
   # "logs" - save accounts info to data/progress.xlsx
   # "collect_all_to_eth" - collect all tokens to ETH at the end
+  # "myriad" - myriad.markets badge
